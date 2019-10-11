@@ -8,7 +8,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const app = express();
-const methodOverride = require('method-override')
+const methodOverride = require("method-override");
 const flash = require("connect-flash");
 const mongoose = require("mongoose");
 const mongoStore = require("connect-mongo")(session);
@@ -37,8 +37,7 @@ app.set("view engine", ".hbs");
 app.use(express.static(path.join(__dirname, "public")));
 
 // ===================method override middleware==================
-app.use(methodOverride('newMethod'))
-
+app.use(methodOverride("newMethod"));
 
 // ==============setting up body-parser================
 app.use(bodyParser.json());
@@ -48,7 +47,7 @@ app.use(
     cookie: {
       // duration: 30 * 60 * 1000,
       // activeDuration: 5 * 60 * 1000,
-      maxAge:180 * 60 * 1000
+      maxAge: 180 * 60 * 1000
     },
     secret: "hospital management system",
     resave: false,
@@ -81,7 +80,7 @@ app.use("/", defaultRoutes);
 app.use("/patient", patientRoutes);
 app.use("/hospital", hospitalRoutes);
 app.use("/user", userRoutes);
-app.use('/admin', adminRoutes)
+app.use("/admin", adminRoutes);
 
 // ======error page=================
 // app.use((req, res,next)=>{
