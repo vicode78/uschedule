@@ -1,0 +1,57 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<div class="table-responsive">
+    <div class="container ">
+        <div class="alert alert-secondary text-center">
+            <h1 style="color:#000"><strong>All Patient Appointment</strong></h1>
+        </div>
+
+
+        <table class="table table-bordered table-responsive" style="margin-top:40px; ">
+            <thead class="bg-dark text-center">
+                <tr class="text-white">
+                    {{!-- <th>id</th> --}}
+                    <th>Date</th>
+                    <th>Email</th>
+                    <th>Hospital</th>
+                    <th>Patient ID</th>
+                    <th>Appointment Date</th>
+                    <th>Department</th>
+                    <th>Patient Message</th>
+                    <th>Approved</th>
+                    <th>Declined</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+
+
+                {{#each patientAppointment}}
+                <tr>
+                    {{!-- <td>{{id}}</td> --}}
+                    <td>{{date}}</td>
+                    <td>{{email}}</td>
+                    <td>{{hospital}}</td>
+                    <td>{{patientID}}</td>
+                    <td>{{appointmentDate}}</td>
+                    <td>{{department}}</td>
+                    <td>{{message}}</td>
+                    <td>{{isApproved}}</td>
+                    <td>{{isDeclined}}</td>
+                    <td class="d-flex">
+                        <a href="/hospital/approveAppointment/{{_id}}" class="btn btn-sm btn-success mr-2">Approve</a><br>
+                        <a href="/hospital/declineAppointment/{{_id}}" class="btn btn-sm btn-warning mr-2">Decline</a><br>
+
+                        {{!-- <a href="/admin/delete/{{_id}}" class="btn btn-sm btn-danger mr-2">Delete</a> --}}
+
+                        <form action="/hospital/deleteAppointment/{{id}}?newMethod=DELETE" method="post">
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

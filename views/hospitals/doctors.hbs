@@ -1,0 +1,37 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<div class="table-responsive">
+    <div class="container ">
+        <div class="alert alert-secondary text-center">
+            <h1 style="color:#000"><strong>Our Doctors</strong></h1>
+        </div>
+
+
+        <table class="table table-bordered" style="margin-top:40px; ">
+            <thead class="bg-dark text-center">
+                <tr class="text-white">
+                    {{!-- <th>id</th> --}}
+                   
+                    <th>Doctor Name</th>
+                    <th>Doctor ID</th>
+                    <th>Specialty</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+
+
+                {{#each doctor}}
+                <tr>
+                    {{!-- <td>{{id}}</td> --}}
+                    <td>{{firstName}}</td>
+                    <td>{{doctorID}}</td>
+                    <td>{{specialty}}</td>
+                    <td>{{email}}</td>
+                
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
