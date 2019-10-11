@@ -1,5 +1,4 @@
 
-const sendMail = require("../misc/mail");
 const nodemailer =require('nodemailer')
 
 module.exports = {
