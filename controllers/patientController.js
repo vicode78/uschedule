@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Patient = require('../models/patient')
 const Admin = require('../models/admin')
+const mailer = require('../misc/mailer')
 const Hospital = require('../models/hospital')
 const Appointment = require('../models/appointment')
 const Joi = require('joi')
@@ -16,7 +17,7 @@ const patientSchema = Joi.object().keys({
     email: Joi.string().email().required(),
     bloodGroup: Joi.string().required(),
     phoneNumber: Joi.string().required(),
-    patientID:Joi.string().required(),
+    // patientId:Joi.string().required(),
     usertype: Joi.string().required(),
     fullAddress: Joi.string().required(),
     password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
@@ -79,13 +80,46 @@ module.exports ={
             result.value.password = hash;
             delete result.value.confirmPassword;
 
+            const patientId =`US${randomstring.generate({ length: 4, charset: 'numeric' })}`
+            // var patientId = 0
+            // patientId++
             
+            // function Counter(initialValue) {
+            //     patientId = initialValue;
+            // }
+            // Counter.prototype.addWithOr = function addWithOr(incrVal) {
+            //     patientId += incrVal || 1;
+            // }
 
-            // Setting store's acct to be inactive
+
+            const html = ` your unique patient identity number is <strong>${patientId}</strong> you however are encouraged to keep it with you
+            at all times has it will be your identity in the hub
+            <br>
+            <br>
+            
+            <strong> thanks and best regards<br>
+            nhub foundation</strong>`
+
+            await mailer.sendEmail('uschedule.info@gmail.com', result.value.email, 'patient ID', html)
+
+
+
+
+            // Setting store's act to be inactive
             // result.value.active = false;
 
             // Saving store to database
-            const newPatient = await new Patient(result.value);
+            const newPatient = await new Patient({
+                firstName : result.value.firstName,
+                lastName: result.value.lastName,
+                email: result.value.email,
+                phoneNumber: result.value.phoneNumber,
+                fullAddress:result.value.fullAddress,
+                bloodGroup:result.value.bloodGroup,
+                password:result.value.password,
+                usertype:'Patient',
+                patientId:patientId
+            });
             await newPatient.save();
             console.log(`${newPatient} created successfully.`);
 
@@ -103,8 +137,9 @@ module.exports ={
 
     },
     profileGet:(req, res)=>{
-        Patient.findById(req.user.id).then(user =>{
-            res.render('patients/dashboard', { layout: 'patient', user:user })
+        let patient = req.user
+        Patient.findById(req.user._id).then(user =>{
+            res.render('patients/dashboard', { layout: 'patient', user, patient })
             
         })
     },
@@ -114,17 +149,17 @@ module.exports ={
         res.redirect('back')
     },
     appointmentPost:(req, res)=>{
-        console.log(req.params.id)
-        Patient.findById(req.params.id).then(patient => {
+        const id = req.params.id
+        console.log(id)
+        Patient.findById(id).then(patient => {
             let newAppointment = new Appointment({
-                patientID: req.body.patientID,
                 hospital: req.body.hospital,
                 message: req.body.message,
                 appointmentDate: req.body.appointmentDate,
-                email: req.body.email,
-                department:req.body.department
-                // fullName: patient.firstName + ' ' + patient.lastName,
-                // email: patient.email
+                department:req.body.department,
+                fullName: patient.firstName + ' ' + patient.lastName,
+                email: patient.email,
+                patientId: patient.patientId
             })
             newAppointment.save().then(newAppointment => {
                 console.log('Appointment savedd successfully', newAppointment)
@@ -138,3 +173,4 @@ module.exports ={
         })
     }
 }
+

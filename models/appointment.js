@@ -15,7 +15,7 @@ const appointmentSchema = new Schema({
         type:String,
         required:true
     },
-    patientID:{
+    patientId:{
         type:String,
         required:true
     },
@@ -39,6 +39,10 @@ const appointmentSchema = new Schema({
     isDeclined:{
         type:Boolean,
         default:false
+    },
+    fullName:{
+        type:String,
+        required:true
     }
 })
 

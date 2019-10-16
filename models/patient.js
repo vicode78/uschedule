@@ -28,11 +28,12 @@ const patientSchema = new Schema({
         type:String,
         required:true
     },
-    // patientID:{
-    //     type:String,
-    //     required:true
-    // },
+    
     bloodGroup:{
+        type:String,
+        required:true
+    },
+    patientId:{
         type:String,
         required:true
     },
