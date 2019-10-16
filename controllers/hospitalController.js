@@ -86,7 +86,15 @@ module.exports ={
             // result.value.active = false;
 
             // Saving store to database
-            const newHospital = await new Hospital(result.value);
+            const newHospital = await new Hospital({
+                HospitalName:result.value.HospitalName,
+                email:result.value.email,
+                RegNumber:result.value.RegNumber,
+                phoneNumber:result.value.phoneNumber,
+                fullAddress:result.value.fullAddress,
+                password:result.value.password,
+                usertype:'Hospital'
+            });
             await newHospital.save();
             console.log(`${newHospital} created successfully.`);
 
