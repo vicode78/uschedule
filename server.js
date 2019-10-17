@@ -1,4 +1,4 @@
-require("dotenv").config("./.env");
+// require("dotenv").config("./.env");
 
 const express = require("express");
 const logger = require("morgan");
@@ -13,7 +13,7 @@ const flash = require("connect-flash");
 const mongoose = require("mongoose");
 const mongoStore = require("connect-mongo")(session);
 const MONGO_URL = require("./config/db").MONGOURL;
-const port = process.env.port;
+const port = process.env.PORT || 3000;
 // ========================database connections===========================
 mongoose.Promise = global.Promise;
 mongoose
