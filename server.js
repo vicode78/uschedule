@@ -13,8 +13,7 @@ const flash = require("connect-flash");
 const mongoose = require("mongoose");
 const mongoStore = require("connect-mongo")(session);
 const MONGO_URL = require("./config/db").MONGOURL;
-const port = process.env.PORT || 3000;
-
+const port = process.env.port;
 // ========================database connections===========================
 mongoose.Promise = global.Promise;
 mongoose
