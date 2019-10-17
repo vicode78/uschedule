@@ -83,9 +83,9 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 
 // ======error page=================
-// app.use((req, res,next)=>{
-//   res.render('default/error404')
-// })
+app.use((req, res,next)=>{
+  res.render('default/error404')
+})
 
 //===============server listenning==============
 app.listen(port, (req, res) => {
