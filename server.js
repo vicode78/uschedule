@@ -13,7 +13,7 @@ const flash = require("connect-flash");
 const mongoose = require("mongoose");
 const mongoStore = require("connect-mongo")(session);
 const MONGO_URL = require("./config/db").MONGOURL;
-const port = process.env.PORT;  
+const port = process.env.PORT || 3000;
 
 // ========================database connections===========================
 mongoose.Promise = global.Promise;
@@ -83,9 +83,9 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 
 // ======error page=================
-app.use((req, res,next)=>{
-  res.render('default/error404')
-})
+app.use((req, res, next) => {
+  res.render("default/error404");
+});
 
 //===============server listenning==============
 app.listen(port, (req, res) => {
