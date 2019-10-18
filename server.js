@@ -12,12 +12,12 @@ const methodOverride = require("method-override");
 const flash = require("connect-flash");
 const mongoose = require("mongoose");
 const mongoStore = require("connect-mongo")(session);
-// const MONGO_URL = require("./config/db").MONGOURL;
+const MONGO_URL = require("./config/db").MONGOURL;
 const port = process.env.PORT || 3000;
 // ========================database connections===========================
 mongoose.Promise = global.Promise;
 mongoose
-  .connect("mongodb + srv://misheal:09034093330@cluster0-wmnvy.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log(`database connected successfully`);
   })
