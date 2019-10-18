@@ -22,7 +22,7 @@ mongoose
     console.log(`database connected successfully`);
   })
   .catch(err => {
-    console.log(`database not connected successfully ${err.MONGO_URL}`);
+    console.log(`database not connected successfully ${err}`);
   });
 // =============setting up morgan=============
 app.use(logger("dev"));
