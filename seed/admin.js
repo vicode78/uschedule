@@ -23,10 +23,10 @@ bcrypt.genSalt(10, (err, salt) => {
         if (err) throw err;
         admin.password = hash;
         admin.save().then(user => {
-            console.log(user);
+            console.log(user)
         })
             .catch(err => {
                 console.log(err);
             });
-    });
-});
+    })
+})
