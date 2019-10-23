@@ -31,47 +31,72 @@ module.exports ={
         try {
             const result = Joi.validate(req.body, hospitalSchema);
 
+            const hospitalName = await Hospital.findOne({'HospitalName': req.body.HospitalName})
+            if(hospitalName){
+                req.flash('error', 'Hospital already exist in our Database please input another')
+                res.redirect('back')
+                return
+            }
+
             // checking if email already exist
-            Patient.findOne({ 'email': req.body.email }, (err, patient) => {
-                Hospital.findOne({ 'email': req.body.email }, (err, hospital) => {
-                    Admin.findOne({ 'email': req.body.email }, (err, admin) => {
-                        if (admin) {
-                            req.flash('error', 'email already in use')
-                            return res.redirect('back')
-                        }
-                        if (err) {
-                            console.log(err)
-                            req.flash('error', 'Something Went Wrong, Please Try Again')
-                            return res.redirect('back')
-                        }
+            // Patient.findOne({ 'email': req.body.email }, (err, patient) => {
+            //     Hospital.findOne({ 'email': req.body.email }, (err, hospital) => {
+            //         Admin.findOne({ 'email': req.body.email }, (err, admin) => {
+            //             if (admin) {
+            //                 req.flash('error', 'email already in use')
+            //                 return res.redirect('/hospital/register')
+            //             }
+            //             if (err) {
+            //                 console.log(err)
+            //                 req.flash('error', 'Something Went Wrong, Please Try Again')
+            //                 return res.redirect('/hospital/register')
+            //             }
 
-                    })
-                    if (hospital) {
-                        req.flash('error', 'E Please Try Again With A Different Email')
-                        return res.redirect('back')
-                    }
-                    if (err) {
-                        console.log(err)
-                        req.flash('error', 'Something Went Wrong, Please Try Again')
-                        return res.redirect('back')
-                    }
+            //         })
+            //         if (hospital) {
+            //             req.flash('error', 'Please Try Again With A Different Email')
+            //             res.redirect('/hospital/register')
+            //             return
+            //         }
+            //         // if (err) {
+            //         //     console.log(err)
+            //         //     req.flash('error', 'Something Went Wrong, Please Try Again')
+            //         //     return res.redirect('/hospital/register')
+            //         // }
 
-                })
-                if (patient) {
-                    req.flash('error', 'Email already in use')
-                    return res.redirect('back')
-                }
-                if (err) {
-                    console.log(err)
-                    req.flash('error', 'Something Went Wrong, Please Try Again')
-                    return res.redirect('back')
-                }
-            })
+            //     })
+            //     if (patient) {
+            //         req.flash('error', 'Email already in use')
+            //         return res.redirect('/hospital/register')
+            //     }
+            //     // if (err) {
+            //     //     console.log(err)
+            //     //     req.flash('error', 'Something Went Wrong, Please Try Again')
+            //     //     return res.redirect('/hospital/register')
+            //     // }
+            // })
+            const patient = await Patient.findOne({'email':req.body.email})
+            if(patient){
+                req.flash('error', 'Email already in use')
+                return res.redirect('/hospital/register')
+            }
+
+            const hospital = await Hospital.findOne({ 'email': req.body.email })
+            if (hospital) {
+                req.flash('error', 'Email already in use')
+                return res.redirect('/hospital/register')
+            }
+
+            const admin = await Admin.findOne({ 'email': req.body.email })
+            if (admin) {
+                req.flash('error', 'Email already in use')
+                return res.redirect('/hospital/register')
+            }
 
             // Comparison of passwords
             if (req.body.password !== req.body.confirmPassword) {
                 req.flash('error', 'Passwords mismatch.');
-                res.redirect('back');
+                res.redirect('/hospital/register');
                 return;
             }
 
@@ -81,9 +106,6 @@ module.exports ={
             delete result.value.confirmPassword;
 
 
-
-            // Setting store's acct to be inactive
-            // result.value.active = false;
 
             // Saving store to database
             const newHospital = await new Hospital({
@@ -118,7 +140,7 @@ module.exports ={
     logoutGet:(req, res)=>{
         req.logout();
         req.flash('success', 'see you later')
-        res.redirect('back')
+        res.redirect('/')
     },
     patientAppointmentGet:(req, res)=>{
         Appointment.find().then(patientAppointment =>{
